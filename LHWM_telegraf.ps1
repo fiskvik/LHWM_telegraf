@@ -45,7 +45,7 @@ $monitor.IsStorageEnabled = $true
 $monitor.Open()
 
 $monitor.Accept([UpdateVisitor]::new());
-$strings = "Name", "Index", "SensorType", "Value"
+$strings = "Name", "Index", "HardwareType", "SensorType", "Value"
 
 
 foreach ($hardware in $monitor.Hardware) {
@@ -56,76 +56,44 @@ foreach ($hardware in $monitor.Hardware) {
                 $null = $out.AppendLine("LibreHardwareMonitor")
                 foreach ($string in $strings) {
                         if (!([string]::IsNullOrWhitespace($hardware.$string))) {
-			        $null = $out.AppendLine(",hw_$string=$hardware.$string")
+	                        $null = $out.AppendLine((",hw_$string=$hardware.$string").Replace(" ","_"))
 			}
                 }
-                $out = "LibreHardwareMonitor"
-                $out += ","
-                $out += "hardware="
-                $out += $hardware.Name
-                $out += ","
-
-                if (!([string]::IsNullOrWhitespace($hardware.Index))) {
-                        $out += "hardwareidx="
-                        $out += $hardware.Index
-                        $out += ","
-                } else {
-                        # Do nothing if no Index
+                foreach ($string in $strings) {
+                        if (!([string]::IsNullOrWhitespace($sensor.$string))) {
+			        if $string.equals("Value") {
+	                                $null = $out.AppendLine((" $string=$hardware.$string").Replace(" ","_"))
+	                        } else {
+			                $null = $out.AppendLine((",$string=$hardware.$string").Replace(" ","_"))
+	                        }
+			}
                 }
-
-                $out += "name="
-		$out += $sensor.Name
-                $out += ","
-
-                if (!([string]::IsNullOrWhitespace($hardware.Index))) {
-                        $out += "hardwareidx="
-                        $out += $hardware.Index
-		        $out += ","
-                } else {
-                        # Do nothing if no Index
-                }
-                $out += "sensoridx="
-                $out += $sensor.Index
-                $out += ","
-                $out += "type="
-		$out += $sensor.SensorType
-                $out = $out.Replace(" ","_")
-                $out += " "
-		$out += $sensor.Value
-                write-host $out
-                #write-host $sensor.Index
-                #write-host $hardware.Index
         }
         foreach ($subHardware in $hardware.SubHardware) {
                 #write-host $hardware.GetReport()
                 #write-host "Subhardware:" $subHardware.Name;
 	        foreach ($sensor in $subHardware.Sensors) {
-                        $out = "LibreHardwareMonitor"
-                        $out += ","
-                        $out += "hardware="
-                        $out += $hardware.Name
-                        $out += ","
-                        $out += "hardwareid="
-                        $out += $hardware.Identifier
-                        $out += ","
-                        $out += "subhardware="
-                        $out += $subHardware.Name
-                        $out += ","
-                        $out += "subhardwareid="
-                        $out += $subhardware.Identifier
-                        $out += ","
-                        $out += "name="
-        		$out += $sensor.Name
-                        $out += ","
-                        $out += "sensorid="
-                        $out += $sensor.Identifier
-                        $out += ","
-                        $out += "type="
-        		$out += $sensor.SensorType
-                        $out = $out.Replace(" ","_")
-                        $out += " "
-        		$out += $sensor.Value
-                        write-host $out
+                        $out = [System.Text.StringBuilder]""
+                        $null = $out.AppendLine("LibreHardwareMonitor")
+                        foreach ($string in $strings) {
+                                if (!([string]::IsNullOrWhitespace($hardware.$string))) {
+	                                $null = $out.AppendLine((",hw_$string=$hardware.$string").Replace(" ","_"))
+		        	}
+                        }
+                        foreach ($string in $strings) {
+                                if (!([string]::IsNullOrWhitespace($hardware.$string))) {
+	                                $null = $out.AppendLine((",subhw_$string=$hardware.$string").Replace(" ","_"))
+		        	}
+                        }
+                        foreach ($string in $strings) {
+                                if (!([string]::IsNullOrWhitespace($sensor.$string))) {
+	        		        if $string.equals("Value") {
+	                                        $null = $out.AppendLine((" $string=$hardware.$string").Replace(" ","_"))
+	                                } else {
+		        	                $null = $out.AppendLine((",$string=$hardware.$string").Replace(" ","_"))
+	                                }
+	        		}
+                        }
 	        }
 	}
 }
