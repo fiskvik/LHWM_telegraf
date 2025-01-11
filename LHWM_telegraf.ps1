@@ -65,11 +65,11 @@ foreach ($hardware in $monitor.Hardware) {
                 foreach ($string in $strings) {
                         if (!([string]::IsNullOrWhitespace($sensor.$string))) {
 			        if ($string.equals("Value")) {
-	                                $null = $out.Append(" " + $sensor.$string)
+	                                $null = $out.Append(" " + $string + "=" + $sensor.$string)
 	                        } elseif ($string.equals("SensorType")) {
-			                $null = $out.Append((","+$string+"="+$sensor.$string).Replace(" ","_"))
+			                $null = $out.Append(("," + $string + "=" + $sensor.$string).Replace(" ","_"))
 	                        } else {
-                                        $null = $out.Append((",Sensor"+$string+"="+$sensor.$string).Replace(" ","_"))
+                                        $null = $out.Append((",Sensor" + $string + "=" + $sensor.$string).Replace(" ","_"))
                                 }
 			}
                 }
@@ -84,29 +84,29 @@ foreach ($hardware in $monitor.Hardware) {
                         foreach ($string in $strings) {
                                 if (!([string]::IsNullOrWhitespace($hardware.$string))) {
 			                if ($string.equals("HardwareType")) {
-	                                        $null = $out.Append((","+$string+"="+$hardware.$string).Replace(" ","_"))
+	                                        $null = $out.Append(("," + $string + "=" + $hardware.$string).Replace(" ","_"))
 	                                } else {
-			                        $null = $out.Append((",Hardware"+$string+"="+$hardware.$string).Replace(" ","_"))
+			                        $null = $out.Append((",Hardware" + $string + "=" + $hardware.$string).Replace(" ","_"))
 	                                }
 		        	}
                         }
                         foreach ($string in $strings) {
                                 if (!([string]::IsNullOrWhitespace($subhardware.$string))) {
 			                if ($string.equals("HardwareType")) {
-	                                        $null = $out.Append((",Sub"+$string+"="+$subhardware.$string).Replace(" ","_"))
+	                                        $null = $out.Append((",Sub" + $string + "=" + $subhardware.$string).Replace(" ","_"))
 	                                } else {
-			                        $null = $out.Append((",SubHardware"+$string+"="+$subhardware.$string).Replace(" ","_"))
+			                        $null = $out.Append((",SubHardware" + $string + "=" + $subhardware.$string).Replace(" ","_"))
 	                                }
 		        	}
                         }
                         foreach ($string in $strings) {
                                 if (!([string]::IsNullOrWhitespace($sensor.$string))) {
 	        		        if ($string.equals("Value")) {
-	                                        $null = $out.Append(" "+$sensor.$string)
+	                                        $null = $out.Append(" " + $string + "=" + $sensor.$string)
 	                                } elseif ($string.equals("SensorType")) {
-			                        $null = $out.Append((","+$string+"="+$sensor.$string).Replace(" ","_"))
+			                        $null = $out.Append(("," + $string + "=" + $sensor.$string).Replace(" ","_"))
 	                                } else {
-                                                $null = $out.Append((",Sensor"+$string+"="+$sensor.$string).Replace(" ","_"))
+                                                $null = $out.Append((",Sensor" + $string + "=" + $sensor.$string).Replace(" ","_"))
 	                                }
 	        		}
                         }
