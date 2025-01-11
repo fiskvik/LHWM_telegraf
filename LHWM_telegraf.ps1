@@ -45,32 +45,45 @@ $monitor.IsStorageEnabled = $true
 $monitor.Open()
 
 $monitor.Accept([UpdateVisitor]::new());
+$strings = "Name", "Index", "SensorType", "Value"
+
 
 foreach ($hardware in $monitor.Hardware) {
         #write-host $hardware.GetReport();
         #write-host $hardware.Identifier
 	foreach ($sensor in $hardware.Sensors) {
+                $out = [System.Text.StringBuilder]""
+                $null = $out.AppendLine("LibreHardwareMonitor")
+                foreach ($string in $strings) {
+                        if (!([string]::IsNullOrWhitespace($hardware.$string))) {
+			        $null = $out.AppendLine(",hw_$string=$hardware.$string")
+			}
+                }
                 $out = "LibreHardwareMonitor"
                 $out += ","
                 $out += "hardware="
                 $out += $hardware.Name
                 $out += ","
-                #$out += "hardwareid="
-                #$out += $hardware.Identifier
 
                 if (!([string]::IsNullOrWhitespace($hardware.Index))) {
                         $out += "hardwareidx="
                         $out += $hardware.Index
                         $out += ","
                 } else {
-
+                        # Do nothing if no Index
                 }
 
                 $out += "name="
 		$out += $sensor.Name
                 $out += ","
-                #$out += "sensorid="
-                #$out += $sensor.Identifier
+
+                if (!([string]::IsNullOrWhitespace($hardware.Index))) {
+                        $out += "hardwareidx="
+                        $out += $hardware.Index
+		        $out += ","
+                } else {
+                        # Do nothing if no Index
+                }
                 $out += "sensoridx="
                 $out += $sensor.Index
                 $out += ","
