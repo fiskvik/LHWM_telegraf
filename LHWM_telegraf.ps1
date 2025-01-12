@@ -1,4 +1,4 @@
-cls
+#cls
 $dll = "LibreHardwareMonitorLib.dll"
 
 Unblock-File -LiteralPath $dll
@@ -122,6 +122,7 @@ Function Start-Monitoring {
         # Do things lots
         Write-Host -NoNewLine 'Press any key to continue...';
         $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+	$monitor.Accept([UpdateVisitor]::new());
 	Read-Sensors
     }
 }
