@@ -1,8 +1,9 @@
+#Requires -RunAsAdministrato
 #cls
 $dll = "LibreHardwareMonitorLib.dll"
 
-Unblock-File -LiteralPath $dll
-Add-Type -LiteralPath $dll
+#Unblock-File -LiteralPath $dll
+#Add-Type -LiteralPath $dll
 
 try {
     $scriptPath = $PSScriptRoot
@@ -22,6 +23,9 @@ catch {
     Write-Host -ForegroundColor Red "Caught Exception: $($Error[0].Exception.Message)"
     exit 2
 }
+
+Unblock-File -LiteralPath $scriptpath\$dll
+Add-Type -LiteralPath $scriptpath\$dll
 
 #Write-Host "Path: $scriptPath"
 . $scriptPath\UpdateVisitor.ps1
